@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<meta name="author" content="Paul M. Hargarten" />
+
+<meta name="date" content="2019-04-17" />
+
+<title>Introduction to Matrix Normal Package</title>
+
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css" data-origin="pandoc">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' || rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#header {
+text-align: center;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Introduction to Matrix Normal Package</h1>
+<h4 class="author">Paul M. Hargarten</h4>
+<h4 class="date">2019-04-17</h4>
+
+
+<div id="TOC">
+<ul>
+<li><a href="#installation">Installation</a></li>
+<li><a href="#distribution-functions">Distribution functions</a></li>
+<li><a href="#matrix-functions">Matrix functions</a></li>
+<li><a href="#conclusion">Conclusion</a></li>
+<li><a href="#references">References</a></li>
+</ul>
+</div>
+
+<!---
+Formatting Issues: matrix Normal Vignette
+3/20/19
+  The $ ... $ is not working
+  The itemized list is not working 
+  Bold all matrices, somehow
+  Adjust the font -- Headers are too big. 
+  
+Then possibly send to Mom for edits? Does it make it sense? 
+--->
+<p>The <code>matrixNormal</code> package in the Comprehensive R Archive Network (CRAN) <span class="citation">[<a href="#ref-rcoreteamLanguageEnvironmentStatistical2018">1</a>]</span> consists of two different types of functions: distribution and matrix ones. First, one can compute densities, probabilities and quantiles of the Matrix Normal Distribution. Second, one can perform useful but simple matrix operations like creating identity matrices and matrices of ones, calculating the trace of a matrix, and implementing the matrix operator <code>vec</code>().</p>
+<div id="installation" class="section level2">
+<h2>Installation</h2>
+<p>You can install the released version of <code>matrixNormal</code> from <a href="https://CRAN.R-project.org">CRAN</a><span class="citation">[<a href="#ref-rcoreteamLanguageEnvironmentStatistical2018">1</a>]</span> with <code>install.packages(&quot;matrixNormal&quot;)</code> and can load the package by:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="op">&gt;</span><span class="st"> </span><span class="kw">library</span>(matrixNormal)</a>
+<a class="sourceLine" id="cb1-2" title="2"></a>
+<a class="sourceLine" id="cb1-3" title="3">Attaching package<span class="op">:</span><span class="st"> &#39;matrixNormal&#39;</span></a>
+<a class="sourceLine" id="cb1-4" title="4">The following object is masked from <span class="st">&#39;package:base&#39;</span><span class="op">:</span></a>
+<a class="sourceLine" id="cb1-5" title="5"></a>
+<a class="sourceLine" id="cb1-6" title="6"><span class="st">    </span>I</a></code></pre></div>
+</div>
+<div id="distribution-functions" class="section level2">
+<h2>Distribution functions</h2>
+<p>The matrix normal distribution is a generalization of the multivariate normal distribution to matrix-valued random values. The parameters consist of a <em>n x p</em> mean matrix <strong>M</strong> and two positive-definite covariance matrices, one for rows <strong>U</strong> and another for columns <strong>V</strong>. Suppose that any <em>n x p</em> matrix <span class="math inline">\(A \sim MatNorm_{n,p}(M, U, V)\)</span>. The mean of <strong>A</strong> is <strong>M</strong>, and the variance of <code>vec(A)</code> is the Kronecker product of <strong>U</strong> and <strong>V</strong>.</p>
+<p>The matrix normal distribution is a conjugate prior of the coefficients used in multivariate regression. Suppose there are <em>p</em> predictors for <em>k</em> dependent variables. In univariate regression, only one dependent variable exists, so the conjugate prior for the <em>k</em> regression coefficients is the multivariate normal distribution. For multivariate regression, the extension of the conjugate prior of the coefficient matrix is the matrix normal distribution. This package also contains the PDF, CDF, and random number generation for the matrix normal distribution (*matnorm). See matrixNormal_Distribution file for more information.</p>
+<p>For instance, the USArrests dataset in the dataset package examines statistics in arrests per 100,000 residents for assault, murder, and rape in each of 50 states since 1973. Suppose that a researcher wants to determine whether the outcomes of assault and murder rates are associated with urban population and rape. The researcher then decides to use a Bayesian multiple linear regression and makes the assumption that the states are independent. However, the covariance between assault and murder is nonzero and needs to be taken into account. In fact, it has a correlation of 0.411 as given below.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1"><span class="op">&gt;</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb2-2" title="2"><span class="er">&gt;</span><span class="st"> </span><span class="kw">library</span>(datasets)</a>
+<a class="sourceLine" id="cb2-3" title="3"><span class="op">&gt;</span><span class="st"> </span><span class="kw">data</span>(USArrests)</a>
+<a class="sourceLine" id="cb2-4" title="4"><span class="op">&gt;</span><span class="st"> </span>X &lt;-<span class="st"> </span><span class="kw">cbind</span>(USArrests<span class="op">$</span>Assault, USArrests<span class="op">$</span>Murder)</a>
+<a class="sourceLine" id="cb2-5" title="5"><span class="op">&gt;</span><span class="st"> </span>Y &lt;-<span class="st"> </span><span class="kw">cbind</span>(USArrests<span class="op">$</span>UrbanPop, USArrests<span class="op">$</span>Rape)</a>
+<a class="sourceLine" id="cb2-6" title="6"><span class="op">&gt;</span><span class="st"> </span><span class="kw">cor</span>(Y)</a>
+<a class="sourceLine" id="cb2-7" title="7">          [,<span class="dv">1</span>]      [,<span class="dv">2</span>]</a>
+<a class="sourceLine" id="cb2-8" title="8">[<span class="dv">1</span>,] <span class="fl">1.0000000</span> <span class="fl">0.4113412</span></a>
+<a class="sourceLine" id="cb2-9" title="9">[<span class="dv">2</span>,] <span class="fl">0.4113412</span> <span class="fl">1.0000000</span></a></code></pre></div>
+<p>We can assume that the outcome <strong>Y</strong> follows a matrix normal distribution with mean matrix <em>M</em>, which is the matrix product of the coefficient matrix, <span class="math inline">\(\Psi\)</span>, times <strong>X</strong>. The covariance across states is assumed to be independent, and the covariance across the predictors be <span class="math inline">\(\Sigma\)</span>. Or succintly, with <span class="math inline">\(k=2\)</span> outcomes, <span class="math display">\[ Y \sim MatNorm_{nx2}( M = X\Psi, U = I(n), V = \Sigma_2) \]</span></p>
+<p>of coefficient matrix times <strong>X</strong>, and covariance across the predictors <span class="math inline">\(\Phi\)</span>. The overall covariance matrix of <strong>Y</strong>, <span class="math inline">\(\Sigma\)</span>, is a block diagonal matrix of <span class="math inline">\(\Phi\)</span>. For instance, suppose that Y has the following distribution, and if we know the parameters, we can calculate its density using <code>dmatnorm()</code>.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1"><span class="op">&gt;</span><span class="st"> </span><span class="co"># Y is n = 50 x p = 2 that follows a matrix normal with mean matrix M, which is product of</span></a>
+<a class="sourceLine" id="cb3-2" title="2"><span class="er">&gt;</span><span class="st"> </span>M &lt;-<span class="st"> </span>(<span class="dv">100</span> <span class="op">*</span><span class="st"> </span><span class="kw">toeplitz</span>(<span class="dv">50</span><span class="op">:</span><span class="dv">1</span>))[, <span class="dv">1</span><span class="op">:</span><span class="dv">2</span>]</a>
+<a class="sourceLine" id="cb3-3" title="3"><span class="op">&gt;</span><span class="st"> </span><span class="kw">dim</span>(M)</a>
+<a class="sourceLine" id="cb3-4" title="4">[<span class="dv">1</span>] <span class="dv">50</span>  <span class="dv">2</span></a>
+<a class="sourceLine" id="cb3-5" title="5"><span class="op">&gt;</span><span class="st"> </span><span class="kw">head</span>(M)</a>
+<a class="sourceLine" id="cb3-6" title="6">     [,<span class="dv">1</span>] [,<span class="dv">2</span>]</a>
+<a class="sourceLine" id="cb3-7" title="7">[<span class="dv">1</span>,] <span class="dv">5000</span> <span class="dv">4900</span></a>
+<a class="sourceLine" id="cb3-8" title="8">[<span class="dv">2</span>,] <span class="dv">4900</span> <span class="dv">5000</span></a>
+<a class="sourceLine" id="cb3-9" title="9">[<span class="dv">3</span>,] <span class="dv">4800</span> <span class="dv">4900</span></a>
+<a class="sourceLine" id="cb3-10" title="10">[<span class="dv">4</span>,] <span class="dv">4700</span> <span class="dv">4800</span></a>
+<a class="sourceLine" id="cb3-11" title="11">[<span class="dv">5</span>,] <span class="dv">4600</span> <span class="dv">4700</span></a>
+<a class="sourceLine" id="cb3-12" title="12">[<span class="dv">6</span>,] <span class="dv">4500</span> <span class="dv">4600</span></a>
+<a class="sourceLine" id="cb3-13" title="13"><span class="op">&gt;</span><span class="st"> </span>U &lt;-<span class="st"> </span><span class="kw">I</span>(<span class="dv">50</span>)  <span class="co">#Covariance across states: Assumed to be independent </span></a>
+<a class="sourceLine" id="cb3-14" title="14"><span class="op">&gt;</span><span class="st"> </span>U[<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>, <span class="dv">1</span><span class="op">:</span><span class="dv">5</span>]</a>
+<a class="sourceLine" id="cb3-15" title="15">  <span class="dv">1</span> <span class="dv">2</span> <span class="dv">3</span> <span class="dv">4</span> <span class="dv">5</span></a>
+<a class="sourceLine" id="cb3-16" title="16"><span class="dv">1</span> <span class="dv">1</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span></a>
+<a class="sourceLine" id="cb3-17" title="17"><span class="dv">2</span> <span class="dv">0</span> <span class="dv">1</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span></a>
+<a class="sourceLine" id="cb3-18" title="18"><span class="dv">3</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">1</span> <span class="dv">0</span> <span class="dv">0</span></a>
+<a class="sourceLine" id="cb3-19" title="19"><span class="dv">4</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">1</span> <span class="dv">0</span></a>
+<a class="sourceLine" id="cb3-20" title="20"><span class="dv">5</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">1</span></a>
+<a class="sourceLine" id="cb3-21" title="21"><span class="op">&gt;</span><span class="st"> </span>V &lt;-<span class="st"> </span><span class="kw">cov</span>(X)  <span class="co">#Covariance across predictors </span></a>
+<a class="sourceLine" id="cb3-22" title="22"><span class="op">&gt;</span><span class="st"> </span>V</a>
+<a class="sourceLine" id="cb3-23" title="23">          [,<span class="dv">1</span>]      [,<span class="dv">2</span>]</a>
+<a class="sourceLine" id="cb3-24" title="24">[<span class="dv">1</span>,] <span class="fl">6945.1657</span> <span class="fl">291.06237</span></a>
+<a class="sourceLine" id="cb3-25" title="25">[<span class="dv">2</span>,]  <span class="fl">291.0624</span>  <span class="fl">18.97047</span></a>
+<a class="sourceLine" id="cb3-26" title="26"><span class="op">&gt;</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb3-27" title="27"><span class="er">&gt;</span><span class="st"> </span><span class="co"># Find the density if Y has the density with these arguments.</span></a>
+<a class="sourceLine" id="cb3-28" title="28"><span class="er">&gt;</span><span class="st"> </span>matrixNormal<span class="op">::</span><span class="kw">dmatnorm</span>(Y, M, U, V)</a>
+<a class="sourceLine" id="cb3-29" title="29">[<span class="dv">1</span>] <span class="dv">-30446783</span></a></code></pre></div>
+<p>The coefficient matrix, <span class="math inline">\(Psi\)</span>, for urban population and rape has dimensions <em>2 x 3</em> for the k = 2 outcomes and the p = 3 predictors. A semi-conjugate prior can be constructed on <span class="math inline">\(\Psi\)</span> to be a Matrix Normal distribution with mean <span class="math inline">\(\Psi_0\)</span> as a matrix of ones, covariance across the predictors as <span class="math inline">\(X&#39;X\)</span>, and with no covariance across states (due to independence). The conjugate prior for the covariance between the outcomes <span class="math inline">\(\Sigma\)</span> is the inverse-Wishart distribution with mean covariance <span class="math inline">\(\Sigma_0\)</span> and degrees of freedom <span class="math inline">\(\nu\)</span>. After defining the parameters, one random matrix is generated from this prior.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" title="1"><span class="op">&gt;</span><span class="st"> </span><span class="co"># Generate a random matrix from this prior.  The prior mean of regression matrix</span></a>
+<a class="sourceLine" id="cb4-2" title="2"><span class="er">&gt;</span><span class="st"> </span><span class="kw">J</span>(<span class="dv">2</span>, <span class="dv">3</span>)</a>
+<a class="sourceLine" id="cb4-3" title="3">  <span class="dv">1</span> <span class="dv">2</span> <span class="dv">3</span></a>
+<a class="sourceLine" id="cb4-4" title="4"><span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span></a>
+<a class="sourceLine" id="cb4-5" title="5"><span class="dv">2</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span></a>
+<a class="sourceLine" id="cb4-6" title="6"><span class="op">&gt;</span><span class="st"> </span><span class="co"># The prior variance between rape and population</span></a>
+<a class="sourceLine" id="cb4-7" title="7"><span class="er">&gt;</span><span class="st"> </span><span class="kw">t</span>(X) <span class="op">%*%</span><span class="st"> </span>X</a>
+<a class="sourceLine" id="cb4-8" title="8">        [,<span class="dv">1</span>]    [,<span class="dv">2</span>]</a>
+<a class="sourceLine" id="cb4-9" title="9">[<span class="dv">1</span>,] <span class="dv">1798262</span> <span class="fl">80756.0</span></a>
+<a class="sourceLine" id="cb4-10" title="10">[<span class="dv">2</span>,]   <span class="dv">80756</span>  <span class="fl">3962.2</span></a>
+<a class="sourceLine" id="cb4-11" title="11"><span class="op">&gt;</span><span class="st"> </span><span class="co"># The prior variance between regression parameters</span></a>
+<a class="sourceLine" id="cb4-12" title="12"><span class="er">&gt;</span><span class="st"> </span><span class="kw">I</span>(<span class="dv">3</span>)</a>
+<a class="sourceLine" id="cb4-13" title="13">  <span class="dv">1</span> <span class="dv">2</span> <span class="dv">3</span></a>
+<a class="sourceLine" id="cb4-14" title="14"><span class="dv">1</span> <span class="dv">1</span> <span class="dv">0</span> <span class="dv">0</span></a>
+<a class="sourceLine" id="cb4-15" title="15"><span class="dv">2</span> <span class="dv">0</span> <span class="dv">1</span> <span class="dv">0</span></a>
+<a class="sourceLine" id="cb4-16" title="16"><span class="dv">3</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">1</span></a>
+<a class="sourceLine" id="cb4-17" title="17"><span class="op">&gt;</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb4-18" title="18"><span class="er">&gt;</span><span class="st"> </span><span class="co"># Random draw for prior would have these values</span></a>
+<a class="sourceLine" id="cb4-19" title="19"><span class="er">&gt;</span><span class="st"> </span>A &lt;-<span class="st"> </span>matrixNormal<span class="op">::</span><span class="kw">rmatnorm</span>(<span class="dt">M =</span> <span class="kw">J</span>(<span class="dv">2</span>, <span class="dv">3</span>), <span class="dt">U =</span> <span class="kw">t</span>(X) <span class="op">%*%</span><span class="st"> </span>X, <span class="dt">V =</span> <span class="kw">I</span>(<span class="dv">3</span>))</a>
+<a class="sourceLine" id="cb4-20" title="20"><span class="op">&gt;</span><span class="st"> </span>A</a>
+<a class="sourceLine" id="cb4-21" title="21">             <span class="dv">1</span>          <span class="dv">2</span>        <span class="dv">3</span></a>
+<a class="sourceLine" id="cb4-22" title="22">[<span class="dv">1</span>,] <span class="fl">-1893.538</span> <span class="fl">1668.57314</span> <span class="fl">94.80760</span></a>
+<a class="sourceLine" id="cb4-23" title="23">[<span class="dv">2</span>,]  <span class="fl">1399.255</span>  <span class="fl">-85.03142</span> <span class="fl">74.05967</span></a>
+<a class="sourceLine" id="cb4-24" title="24"><span class="op">&gt;</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb4-25" title="25"><span class="er">&gt;</span><span class="st"> </span><span class="co"># Predicted Counts for y can be given as:</span></a>
+<a class="sourceLine" id="cb4-26" title="26"><span class="er">&gt;</span><span class="st"> </span><span class="kw">ceiling</span>(<span class="kw">rowSums</span>(X <span class="op">%*%</span><span class="st"> </span>A))</a>
+<a class="sourceLine" id="cb4-27" title="27"> [<span class="dv">1</span>] <span class="dv">-12391</span> <span class="dv">-20348</span> <span class="dv">-27021</span> <span class="dv">-12513</span> <span class="dv">-23428</span> <span class="dv">-15584</span>  <span class="dv">-9736</span> <span class="dv">-22786</span> <span class="dv">-22223</span>  <span class="dv">-3307</span></a>
+<a class="sourceLine" id="cb4-28" title="28">[<span class="dv">11</span>]   <span class="dv">1371</span> <span class="dv">-12009</span> <span class="dv">-17971</span>  <span class="dv">-4712</span>  <span class="dv">-4234</span>  <span class="dv">-6638</span>   <span class="dv">-720</span> <span class="dv">-11029</span>  <span class="dv">-7887</span> <span class="dv">-23359</span></a>
+<a class="sourceLine" id="cb4-29" title="29">[<span class="dv">21</span>] <span class="dv">-13285</span> <span class="dv">-16391</span>  <span class="dv">-5622</span> <span class="dv">-11359</span> <span class="dv">-10673</span>  <span class="dv">-5857</span>  <span class="dv">-7306</span> <span class="dv">-15862</span>  <span class="dv">-4503</span> <span class="dv">-10421</span></a>
+<a class="sourceLine" id="cb4-30" title="30">[<span class="dv">31</span>] <span class="dv">-21268</span> <span class="dv">-17650</span> <span class="dv">-25815</span>  <span class="dv">-4746</span>  <span class="dv">-5484</span> <span class="dv">-10491</span> <span class="dv">-13892</span>  <span class="dv">-5050</span> <span class="dv">-17927</span> <span class="dv">-16322</span></a>
+<a class="sourceLine" id="cb4-31" title="31">[<span class="dv">41</span>]  <span class="dv">-5918</span>  <span class="dv">-6144</span>  <span class="dv">-8530</span> <span class="dv">-11176</span>  <span class="dv">-3193</span>  <span class="dv">-8504</span> <span class="dv">-13319</span>  <span class="dv">-2629</span>  <span class="dv">-3288</span> <span class="dv">-11515</span></a></code></pre></div>
+<p>However, the predicted counts do not have much meaning because the prior is uninformed from the data. We should use the posterior distribution to predict <strong>Y</strong>. Iranmanesh 2010 <span class="citation">[<a href="#ref-iranmaneshConditionalApplicationsMatrix2010">2</a>]</span> shows the posterior distributions to be <span class="math display">\[ \Psi | \Sigma, Y, X \sim MatNorm_{kxp}( \frac{\hat{\Psi} +\Psi_0}{2}, (2X^TX)^{-1}, \Sigma)\]</span> and <span class="math display">\[ \Sigma | Y, X \sim W^{-1}_p(S*, 2\nu+n)\]</span> where:<br />
+* <span class="math inline">\(\hat{\Psi}\)</span> is the maximum likelihood estimate (MLE) for the coefficient <span class="math inline">\(\Psi\)</span> matrix. * <em>S</em> is the MLE for the covariance matrix <span class="math inline">\(\Sigma\)</span>: <span class="math inline">\((Y-X\cdot\hat{\Psi})^T*(Y-X\cdot\hat{\Psi})\)</span> * <span class="math inline">\(S^{*}\)</span> is the data-adjusted matrix of inverse Wishart, <span class="math display">\[ S^{*} = 2\Sigma_0 + S + (\hat{\Psi}-\Psi_0)&#39;(2X^TX)^{-1}(\hat{\Psi}-\Psi_0) \]</span> * <em>c</em> is the dimension of <span class="math inline">\(\Sigma\)</span> * <em>n</em> is the sample size, the number of rows in <strong>Y</strong> and <strong>X</strong>.</p>
+<p>Additional details can be found in Iranmanesh et al. 2010 <span class="citation">[<a href="#ref-iranmaneshConditionalApplicationsMatrix2010">2</a>]</span>. At any rate, the <code>matrixNormal</code> package can be used in Bayesian Multivariate Linear Regression.</p>
+</div>
+<div id="matrix-functions" class="section level2">
+<h2>Matrix functions</h2>
+<p>In the <code>matrixNormal</code> package, useful but simple matrix operations have been coded:</p>
+<table>
+<colgroup>
+<col width="45%"></col>
+<col width="54%"></col>
+</colgroup>
+<thead>
+<tr class="header">
+<th>Filename</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>is.symmetric.matrix</td>
+<td>Is a matrix square? symmetric? positive definite? or positive semi-definite? A tolerance is included here.</td>
+</tr>
+<tr class="even">
+<td>Special_matrices</td>
+<td>Creates the identity matrix I and matrix of 1’s J.</td>
+</tr>
+<tr class="odd">
+<td>tr</td>
+<td>Calculates the usual trace of a matrix</td>
+</tr>
+<tr class="even">
+<td>vec</td>
+<td>Stacks a Matrix using matrix operator “vec” and has option to keep names.</td>
+</tr>
+</tbody>
+</table>
+<p>For example, these functions can be applied to the following matrices.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" title="1"><span class="op">&gt;</span><span class="st"> </span><span class="co"># Make a 3 x 3 Identity matrix</span></a>
+<a class="sourceLine" id="cb5-2" title="2"><span class="er">&gt;</span><span class="st"> </span><span class="kw">I</span>(<span class="dv">3</span>)</a>
+<a class="sourceLine" id="cb5-3" title="3">  <span class="dv">1</span> <span class="dv">2</span> <span class="dv">3</span></a>
+<a class="sourceLine" id="cb5-4" title="4"><span class="dv">1</span> <span class="dv">1</span> <span class="dv">0</span> <span class="dv">0</span></a>
+<a class="sourceLine" id="cb5-5" title="5"><span class="dv">2</span> <span class="dv">0</span> <span class="dv">1</span> <span class="dv">0</span></a>
+<a class="sourceLine" id="cb5-6" title="6"><span class="dv">3</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">1</span></a>
+<a class="sourceLine" id="cb5-7" title="7"><span class="op">&gt;</span><span class="st"> </span><span class="co"># Make a 3 x 4 J matrix</span></a>
+<a class="sourceLine" id="cb5-8" title="8"><span class="er">&gt;</span><span class="st"> </span><span class="kw">J</span>(<span class="dv">3</span>, <span class="dv">4</span>)</a>
+<a class="sourceLine" id="cb5-9" title="9">  <span class="dv">1</span> <span class="dv">2</span> <span class="dv">3</span> <span class="dv">4</span></a>
+<a class="sourceLine" id="cb5-10" title="10"><span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span></a>
+<a class="sourceLine" id="cb5-11" title="11"><span class="dv">2</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span></a>
+<a class="sourceLine" id="cb5-12" title="12"><span class="dv">3</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span></a>
+<a class="sourceLine" id="cb5-13" title="13"><span class="op">&gt;</span><span class="st"> </span><span class="co"># Make a 3 x 3 J matrix</span></a>
+<a class="sourceLine" id="cb5-14" title="14"><span class="er">&gt;</span><span class="st"> </span><span class="kw">J</span>(<span class="dv">3</span>, <span class="dv">3</span>)</a>
+<a class="sourceLine" id="cb5-15" title="15">  <span class="dv">1</span> <span class="dv">2</span> <span class="dv">3</span></a>
+<a class="sourceLine" id="cb5-16" title="16"><span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span></a>
+<a class="sourceLine" id="cb5-17" title="17"><span class="dv">2</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span></a>
+<a class="sourceLine" id="cb5-18" title="18"><span class="dv">3</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span></a>
+<a class="sourceLine" id="cb5-19" title="19"><span class="op">&gt;</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb5-20" title="20"><span class="er">&gt;</span><span class="st"> </span><span class="co"># Calculate the trace of a J matrix</span></a>
+<a class="sourceLine" id="cb5-21" title="21"><span class="er">&gt;</span><span class="st"> </span><span class="kw">tr</span>(<span class="kw">J</span>(<span class="dv">3</span>, <span class="dv">3</span>))  <span class="co">#Should be 3</span></a>
+<a class="sourceLine" id="cb5-22" title="22">[<span class="dv">1</span>] <span class="dv">3</span></a>
+<a class="sourceLine" id="cb5-23" title="23"><span class="op">&gt;</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb5-24" title="24"><span class="er">&gt;</span><span class="st"> </span><span class="co"># Stack a matrix (used in distribution functions)</span></a>
+<a class="sourceLine" id="cb5-25" title="25"><span class="er">&gt;</span><span class="st"> </span>A &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">c</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">4</span>), <span class="dt">nrow =</span> <span class="dv">2</span>, <span class="dt">dimnames =</span> <span class="kw">list</span>(<span class="ot">NULL</span>, <span class="kw">c</span>(<span class="st">&quot;A&quot;</span>, <span class="st">&quot;B&quot;</span>)))</a>
+<a class="sourceLine" id="cb5-26" title="26"><span class="op">&gt;</span><span class="st"> </span>A</a>
+<a class="sourceLine" id="cb5-27" title="27">     A B</a>
+<a class="sourceLine" id="cb5-28" title="28">[<span class="dv">1</span>,] <span class="dv">1</span> <span class="dv">3</span></a>
+<a class="sourceLine" id="cb5-29" title="29">[<span class="dv">2</span>,] <span class="dv">2</span> <span class="dv">4</span></a>
+<a class="sourceLine" id="cb5-30" title="30"><span class="op">&gt;</span><span class="st"> </span><span class="kw">vec</span>(A)</a>
+<a class="sourceLine" id="cb5-31" title="31"><span class="dv">1</span><span class="op">:</span>A <span class="dv">2</span><span class="op">:</span>A <span class="dv">1</span><span class="op">:</span>B <span class="dv">2</span><span class="op">:</span>B </a>
+<a class="sourceLine" id="cb5-32" title="32">  <span class="dv">1</span>   <span class="dv">2</span>   <span class="dv">3</span>   <span class="dv">4</span> </a>
+<a class="sourceLine" id="cb5-33" title="33"><span class="op">&gt;</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb5-34" title="34"><span class="er">&gt;</span><span class="st"> </span><span class="co"># Test if matrix is symmetric (used in distribution function)</span></a>
+<a class="sourceLine" id="cb5-35" title="35"><span class="er">&gt;</span><span class="st"> </span><span class="kw">is.symmetric.matrix</span>(A)</a>
+<a class="sourceLine" id="cb5-36" title="36">[<span class="dv">1</span>] <span class="st">&quot;A is not symmetric. Top of the matrix: &quot;</span></a>
+<a class="sourceLine" id="cb5-37" title="37">     A B</a>
+<a class="sourceLine" id="cb5-38" title="38">[<span class="dv">1</span>,] <span class="dv">1</span> <span class="dv">3</span></a>
+<a class="sourceLine" id="cb5-39" title="39">[<span class="dv">2</span>,] <span class="dv">2</span> <span class="dv">4</span></a>
+<a class="sourceLine" id="cb5-40" title="40">[<span class="dv">1</span>] <span class="ot">FALSE</span></a></code></pre></div>
+</div>
+<div id="conclusion" class="section level2">
+<h2>Conclusion</h2>
+<p>Although other packages on CRAN have some matrixNormal functionality, this package provides a general approach in randomly sampling a matrix normal random variate. The <code>MBSP::matrix.normal</code> , <code>matrixsampling::rmatrixnormal</code>, and <code>LaplacesDemon::rmatrixnorm</code> functions also randomly sample from the matrix normal distribution <span class="citation">[<a href="#ref-baiMBSPMultivariateBayesian2018">3</a>–<a href="#ref-statisticatLaplacesDemonCompleteEnvironment2018">5</a>]</span>. The function in [MBSP] (<a href="https://cran.r-project.org/web/packages/MBSP/" class="uri">https://cran.r-project.org/web/packages/MBSP/</a>) uses Cholesky decomposition of individual matrices <strong>U</strong> and <strong>V</strong> <span class="citation">[<a href="#ref-baiMBSPMultivariateBayesian2018">3</a>]</span>. Similarly, the function in [matrixsampling] (<a href="https://cran.r-project.org/web/packages/matrixsampling/" class="uri">https://cran.r-project.org/web/packages/matrixsampling/</a>) uses the Spectral decomposition of the individual matrices <strong>U</strong> and <strong>V</strong> <span class="citation">[<a href="#ref-laurentMatrixsamplingSimulationsMatrix2018">4</a>]</span>. Comparatively, the new function, <code>rmatnorm()</code>, in <code>matrixNormal</code> package is flexible in the decomposition of the covariance matrix, which is Kronecker product of <strong>U</strong> and <strong>V</strong>. While you can simulate many samples using the <code>rmatrixnormal()</code> function from <code>matrixsampling</code> package, the new <code>rmatnorm</code>() function only generates one variate, but can generate many samples by placing <code>rmatnorm</code>() function inside a for-loop. The [<code>LaplacesDemon</code>] (<a href="https://cran.r-project.org/web/packages/LaplacesDemon/index.html" class="uri">https://cran.r-project.org/web/packages/LaplacesDemon/index.html</a>) package also has a density function, <code>dmatrixnorm</code>(), which calculates the log determinant of Cholesky decomposition of a positive definite matrix <span class="citation">[<a href="#ref-statisticatLaplacesDemonCompleteEnvironment2018">5</a>]</span>. However, the random matrix <strong>A</strong> that follows a matrix normal distribution does not need to be positive definite <span class="citation">[<a href="#ref-iranmaneshConditionalApplicationsMatrix2010">2</a>]</span>. There is no such restriction on the random matrix in <code>matrixNormal</code> package.</p>
+<p>In conclusion, the <code>matrixNormal</code> package collects all forms of the Matrix Normal Distribution in one place: calculating the PDF and CDF of the Matrix Normal distribution and simulating a random variate from this distribution. The package allows the users to be flexible in finding the random variate. Its main application in using this package is the Bayesian multivariate regression.</p>
+</div>
+<div id="references" class="section level2 unnumbered">
+<h2>References</h2>
+<div id="refs" class="references">
+<div id="ref-rcoreteamLanguageEnvironmentStatistical2018">
+<p>1. R Core Team <em>R: A Language and Environment for Statistical Computing</em>; R Foundation for Statistical Computing: Vienna, Austria, 2018;</p>
+</div>
+<div id="ref-iranmaneshConditionalApplicationsMatrix2010">
+<p>2. Iranmanesh, A.; Arashi, M.; Tabatabaey, S.M.M. On Conditional Applications of Matrix Variate Normal Distribution. <em>IJMSI</em> <strong>2010</strong>, <em>5</em>, 33–43.</p>
+</div>
+<div id="ref-baiMBSPMultivariateBayesian2018">
+<p>3. Bai, R.; Ghosh, M. <em>MBSP: Multivariate Bayesian Model with Shrinkage Priors</em>; 2018;</p>
+</div>
+<div id="ref-laurentMatrixsamplingSimulationsMatrix2018">
+<p>4. Laurent, S. <em>Matrixsampling: Simulations of Matrix Variate Distributions</em>; 2018;</p>
+</div>
+<div id="ref-statisticatLaplacesDemonCompleteEnvironment2018">
+<p>5. Statisticat; LLC. <em>LaplacesDemon: Complete Environment for Bayesian Inference</em>; Bayesian-Inference.com, 2018;</p>
+</div>
+</div>
+</div>
+
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
