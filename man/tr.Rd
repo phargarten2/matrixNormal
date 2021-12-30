@@ -10,21 +10,22 @@ tr(A)
 \item{A}{Square matrix.}
 }
 \description{
-Computes the trace of a square numeric matrix A.
+Computes the trace of a square numeric matrix \emph{A}.
 }
 \note{
 If the argument is not a square numeric matrix, the function presents an error and
      terminates.
 }
 \examples{
-A <- matrix( seq( 1, 16, 1 ), nrow=4, byrow=TRUE )
+A <- matrix(seq(1, 16, 1), nrow = 4, byrow = TRUE)
 A
-tr( A )
-tr( I(3) )
-
+tr(A)
+tr(I(3))
 }
 \seealso{
-Other matrix: \code{\link{special.matrix}}
+Other matrix: 
+\code{\link{special.matrix}},
+\code{\link{vec}()}
 }
 \concept{matrix}
 \keyword{matrix}

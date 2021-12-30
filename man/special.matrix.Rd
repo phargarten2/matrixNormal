@@ -11,28 +11,28 @@ I(n)
 J(n, m = n)
 }
 \arguments{
-\item{n}{number of rows in I or J.}
+\item{n}{Number of rows in \emph{I} or \emph{J}.}
 
-\item{m}{number of columns in J. Default: same as number of rows.}
+\item{m}{Number of columns in \emph{J}. Default: Same as number of rows.}
 }
 \description{
-Creates Identity Matrix I and Matrix of Ones J.
+Creates an Identity Matrix \emph{I} and a Matrix of Ones \emph{J}. \itemize{
+\item \code{I}(): Creates an identity matrix where the number of columns is n.  This is a diagonal matrix with all equal to one (1). An identity matrix is usually written as \emph{I}. Names of rows and columns (\code{dimnames}) are included.
+\item \code{J}(): Creates a matrix of ones with any number of rows and columns. Names of rows and columns (\code{dimnames}) are included.
 }
-\details{
-Create an Identity Matrix where the number of columns is n.  This is a diagonal matrix with all equal to one (1). An identity matrix is usually written as I. To make an identity matrix with r rows and columns, use \code{I}.
-
-A J matrix is a general matrix of any number of rows and columns, but in which all elements in the matrix are equal to one (1). \code{J} will make a n x m J matrix, given the number or rows, n, and number of columns, m. Names of rows and columns (dimnames) are included.
 }
 \examples{
-#To create an identity matrix of order 12
+# To create an identity matrix of order 12
 I(2)
-#To make a matrix of 6 rows and 10 columns of all ones
-J(6,10)
-#To make a matrix of unity, dimensions 6 x 6 .
+# To make a matrix of 6 rows and 10 columns of all ones
+J(6, 10)
+# To make a matrix of unity, dimensions 6 x 6.
 J(6)
 }
 \seealso{
-Other matrix: \code{\link{tr}}
+Other matrix: 
+\code{\link{tr}()},
+\code{\link{vec}()}
 }
 \concept{matrix}
 \keyword{identity}

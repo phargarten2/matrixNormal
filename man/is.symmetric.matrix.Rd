@@ -16,22 +16,27 @@ is.positive.semi.definite(A, tol = .Machine$double.eps^0.5)
 is.positive.definite(A, tol = .Machine$double.eps^0.5)
 }
 \arguments{
-\item{A}{Numeric matrix with no missing values.}
+\item{A}{A numeric matrix.}
 
-\item{tol}{A numeric tolerance level used to check if a matrix is symmetric; that is if the difference between the matrix and its transpose is between -tol and tol.}
+\item{tol}{A numeric tolerance level used to check if a matrix is symmetric. That is, a matrix is symmetric if the difference between the matrix and its transpose is between -\code{tol} and \code{tol}.}
 }
 \description{
-Determine if a matrix is square, symmetric, positive-definite, or positive-semi-definite.
+Determines if a matrix is square, symmetric, positive-definite, or positive-semi-definite.
 }
 \details{
-A tolerance is added to indicate if a matrix is approximately symmetric. If the matrix is not symmetric, a message as well as the top of the matrix is printed.
+A tolerance is added to indicate if a matrix \emph{A} is approximately symmetric. If \emph{A} is not symmetric, a message and first few rows of the matrix is printed. If \emph{A} has any missing values, NA is returned.
 \itemize{
-\item \code{is.symmetric.matrix} returns TRUE if A is a symmetric square numeric matrix and FALSE otherwise.  A matrix is symmetric if the difference between A and its transpose is less than \emph{tol}.
-\item \code{is.positive.semi.definite} returns TRUE if a square symmetric real matrix A is positive semi-definite.  A matrix is positive semi-definite if its smallest eigenvalue is greater than or equal to zero.
-\item \code{is.positive.definite} returns TRUE if a square symmetric real matrix A is positive-definite.  A matrix is positive-definite if its smallest eigenvalue is greater than zero. }
+\item \code{is.symmetric.matrix} returns TRUE if \emph{A} is a numeric, square and symmetric matrix; otherwise, returns FALSE.  A matrix is symmetric if the absolute difference between \emph{A} and its transpose is less than \code{tol}.
+\item \code{is.positive.semi.definite} returns TRUE if a real, square, and symmetric matrix \emph{A} is positive semi-definite.  A matrix is positive semi-definite if its smallest eigenvalue is greater than or equal to zero.
+\item \code{is.positive.definite} returns TRUE if a real, square, and symmetric matrix  \emph{A} is positive-definite.  A matrix is positive-definite if its smallest eigenvalue is greater than zero.
+}
 }
 \note{
-Functions adapted from Frederick Novomestky's \pkg{matrixcalc} package in order to implement \code{rmatnorm} function.  I changed argument x to A to reflect usual matrix notation. For \code{is.symmetric}, I added a tolerance so that A is symmetric even provided small differences between A and its transpose. Useful for rmatnorm function, which was used repeatedly to generate matrixNormal random variates in a Markov chain. For \code{is.positive.semi.definite} and \code{is.positive.definite},  I also saved time by avoiding a $for-loop$ and instead calculating the minimum of eigenvalues.
+Functions are adapted from Frederick Novomestky's \pkg{matrixcalc} package in order to implement the \code{rmatnorm} function. The following changes are made: \itemize{
+\item  I changed argument x to A to reflect usual matrix notation.
+\item For \code{is.symmetric}, I added a tolerance so that \emph{A} is symmetric even provided small differences between \emph{A} and its transpose. This is useful for \code{rmatnorm} function, which was used repeatedly to generate matrixNormal random variates in a Markov chain.
+\item For \code{is.positive.semi.definite} and \code{is.positive.definite},  I also saved time by avoiding a \code{for-loop} and instead calculating the minimum of eigenvalues.
+}
 }
 \examples{
 ## Example 0: Not square matrix
@@ -46,21 +51,21 @@ df
 is.square.matrix(df)
 }
 
-## Example 2: Not Symmetric & Compare against matrixcalc
-F <- matrix(c(1, 2, 3, 4), nrow = 2, byrow = TRUE); F
+## Example 2: Not symmetric & compare against matrixcalc
+F <- matrix(c(1, 2, 3, 4), nrow = 2, byrow = TRUE)
+F
 is.square.matrix(F)
-is.symmetric.matrix(F)   # should be FALSE
+is.symmetric.matrix(F) # should be FALSE
 if (!requireNamespace("matrixcalc", quietly = TRUE)) {
   matrixcalc::is.symmetric.matrix(F)
 } else {
   message("you need to install the package matrixcalc to compare this example")
 }
-# Another Symmetric Test found in base. Because of this, is.symmetric() may not be needed
-isSymmetric.matrix(F)
 
-## Example 3: Symmetric but negative-definite. same test of functions
-##' eigenvalues are  3 -1
-G <- matrix(c(1, 2, 2, 1), nrow = 2, byrow = TRUE); G
+## Example 3: Symmetric but negative-definite. The functions are same.
+# eigenvalues are  3 -1
+G <- matrix(c(1, 2, 2, 1), nrow = 2, byrow = TRUE)
+G
 is.symmetric.matrix(G)
 if (!requireNamespace("matrixcalc", quietly = TRUE)) {
   matrixcalc::is.symmetric.matrix(G)
@@ -70,10 +75,11 @@ if (!requireNamespace("matrixcalc", quietly = TRUE)) {
 isSymmetric.matrix(G)
 is.positive.definite(G) # FALSE
 is.positive.semi.definite(G) # FALSE
+
 ## Example 3b: A missing value in G
 G[1, 1] <- NA
 is.symmetric.matrix(G) # NA
-is.positive.definite(G)  # NA
+is.positive.definite(G) # NA
 
 ## Example 4: positive definite matrix
 # eigenvalues are 3.4142136 2.0000000 0.585786
